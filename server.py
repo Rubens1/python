@@ -11,6 +11,7 @@ def imprimir_etiqueta():
     cidade = dados.get('cidade')
     estado = dados.get('estado')
     cep = dados.get('cep')
+    impressora = dados.get('impressora')
 
     etiqueta_texto = f"""
     Nome: {nome}
@@ -21,10 +22,10 @@ def imprimir_etiqueta():
     """
 
     try:
-        printer_name = win32print.GetDefaultPrinter()
+        #printer_name = win32print.GetDefaultPrinter()
 
         # Abrir a impressora
-        hPrinter = win32print.OpenPrinter(printer_name)
+        hPrinter = win32print.OpenPrinter(impressora)
         try:
             # Iniciar um novo trabalho de impressão
             hJob = win32print.StartDocPrinter(hPrinter, 1, ("Etiqueta", None, "RAW"))
