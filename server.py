@@ -3,6 +3,7 @@ import win32print
 
 app = Flask(__name__)
 
+#Criação da rota post
 @app.route('/imprimirEtiqueta', methods=['POST'])
 def imprimir_etiqueta():
     dados = request.get_json()
