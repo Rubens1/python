@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
 import win32print
+import socket
 
 app = Flask(__name__)
 
-#Criação da rota post
 @app.route('/imprimirEtiqueta', methods=['POST'])
 def imprimir_etiqueta():
     dados = request.get_json()
@@ -15,35 +15,33 @@ def imprimir_etiqueta():
     impressora = dados.get('impressora')
 
     etiqueta_texto = f"""
-    Nome: {nome}
-    Endereço: {endereco}
-    Cidade: {cidade}
-    Estado: {estado}
-    CEP: {cep}
+    <html>
+        <header>
+        <style>
+            
+        </style>
+        </header>
+        <body>
+            <p class=''><strong>Nome:</strong> {nome}</p>
+            <p class=''><strong>Endereço:</strong> {endereco}</p>
+            <p class=''><strong>Cidade:</strong> {cidade}</p>
+            <p class=''><strong>Estado:</strong> {estado}</p>
+            <p class=''><strong>CEP:</strong> {cep}</p>
+        </body>
+    </html>
     """
 
     try:
-        #printer_name = win32print.GetDefaultPrinter()
-
-        # Abrir a impressora
         hPrinter = win32print.OpenPrinter(impressora)
         try:
-            # Iniciar um novo trabalho de impressão
             hJob = win32print.StartDocPrinter(hPrinter, 1, ("Etiqueta", None, "RAW"))
             try:
-                # Iniciar a página de impressão
                 win32print.StartPagePrinter(hPrinter)
-
-                # Escrever na impressora
-                win32print.WritePrinter(hPrinter, etiqueta_texto.encode())
-
-                # Finalizar a página de impressão
+                win32print.WritePrinter(hPrinter, etiqueta_texto.encode('utf-8'))
                 win32print.EndPagePrinter(hPrinter)
             finally:
-                # Finalizar o trabalho de impressão
                 win32print.EndDocPrinter(hPrinter)
         finally:
-            # Fechar a impressora
             win32print.ClosePrinter(hPrinter)
 
         return jsonify({"status": "sucesso", "mensagem": "Etiqueta enviada para impressão."})
@@ -51,4 +49,6 @@ def imprimir_etiqueta():
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(port=3000)
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    app.run(host=local_ip, port=5544)
