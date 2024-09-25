@@ -5,6 +5,7 @@ import socket
 app = Flask(__name__)
 
 @app.route('/imprimirEtiqueta', methods=['POST'])
+
 def imprimir_etiqueta():
     dados = request.get_json()
     nome = dados.get('nome')
