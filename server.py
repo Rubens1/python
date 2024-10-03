@@ -5,7 +5,6 @@ import socket
 app = Flask(__name__)
 
 @app.route('/imprimirEtiqueta', methods=['POST'])
-
 def imprimir_etiqueta():
     dados = request.get_json()
     nome = dados.get('nome')
@@ -23,11 +22,11 @@ def imprimir_etiqueta():
         </style>
         </header>
         <body>
-            <p class=''><strong>Nome:</strong> {nome}</p>
-            <p class=''><strong>Endereço:</strong> {endereco}</p>
-            <p class=''><strong>Cidade:</strong> {cidade}</p>
-            <p class=''><strong>Estado:</strong> {estado}</p>
-            <p class=''><strong>CEP:</strong> {cep}</p>
+            <p class='nome'><strong>Nome:</strong> {nome}</p>
+            <p class='endereco'><strong>Endereço:</strong> {endereco}</p>
+            <p class='cidade'><strong>Cidade:</strong> {cidade}</p>
+            <p class='estado'><strong>Estado:</strong> {estado}</p>
+            <p class='cep'><strong>CEP:</strong> {cep}</p>
         </body>
     </html>
     """
